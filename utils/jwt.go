@@ -5,20 +5,21 @@ import (
 	"fmt"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/spf13/viper"
 )
 
 var secret []byte
 
 func init() {
-	// var err error
-	// viper.SetConfigName(".env") // name of config file (without extension)
-	// viper.SetConfigType("yaml")
-	// viper.AddConfigPath(".")   // optionally look for config in the working directory
-	// err = viper.ReadInConfig() // Find and read the config file
-	// if err != nil {            // Handle errors reading the config file
-	// 	panic(fmt.Errorf("jwt fatal error config file: %w", err))
-	// }
-	secret = []byte("sdf")
+	var err error
+	viper.SetConfigName(".env") // name of config file (without extension)
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")   // optionally look for config in the working directory
+	err = viper.ReadInConfig() // Find and read the config file
+	if err != nil {            // Handle errors reading the config file
+		panic(fmt.Errorf("jwt fatal error config file: %w", err))
+	}
+	secret = []byte(viper.GetString("jwt.secret"))
 }
 
 type Claims struct {

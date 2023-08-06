@@ -19,7 +19,7 @@ func init() {
 	if err != nil {            // Handle errors reading the config file
 		panic(fmt.Errorf("jwt fatal error config file: %w", err))
 	}
-	secret = []byte(viper.GetString("jwt.secret"))
+	secret = []byte("sdf")
 }
 
 type Claims struct {

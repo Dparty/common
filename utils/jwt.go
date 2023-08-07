@@ -20,7 +20,6 @@ func init() {
 		panic(fmt.Errorf("jwt fatal error config file: %w", err))
 	}
 	secret = []byte(viper.GetString("jwt.secret"))
-	fmt.Println(secret)
 }
 
 type Claims struct {

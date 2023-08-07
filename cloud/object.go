@@ -34,6 +34,5 @@ func CreatePresignedURL(serctID, sercetKey, region, bucket, path string) string 
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(presignedURL)
-	return presignedURL.RawPath
+	return presignedURL.String()
 }

@@ -18,6 +18,7 @@ const (
 	SERVICE_KEY_DUPLICATION_ERROR Error_Code = 6004
 	VERIFICATION_CODE_ERROR       Error_Code = 6005
 	VERIFICATION_CODE_FREQUENT    Error_Code = 6006
+	PRINTER_SN_DUPLICATE_ERROR    Error_Code = 6007
 	UNDEFINE_ERROR                Error_Code = 9999
 )
 
@@ -41,6 +42,14 @@ func GinErrorHandler(c *gin.Context, err Error) {
 	)
 }
 
+func PrinterSnDuplecateError() *Error {
+	return &Error{
+		StatusCode: http.StatusConflict,
+		Code:       PRINTER_SN_DUPLICATE_ERROR,
+		Message:    "Printer SN code duplicated!",
+	}
+}
+
 func VerificationCodeFrequent() *Error {
 	return &Error{
 		StatusCode: http.StatusForbidden,
@@ -53,7 +62,7 @@ func VerificationCodeError() *Error {
 	return &Error{
 		StatusCode: http.StatusForbidden,
 		Code:       VERIFICATION_CODE_ERROR,
-		Message:    "Verification Code error.",
+		Message:    "Verification Code error!",
 	}
 }
 
@@ -61,7 +70,7 @@ func EmailExists() *Error {
 	return &Error{
 		StatusCode: http.StatusForbidden,
 		Code:       EMAIL_EXISTS_ERROR,
-		Message:    "Email exists.",
+		Message:    "Email exists!",
 	}
 }
 

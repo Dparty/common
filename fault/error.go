@@ -16,6 +16,7 @@ var ErrEmailExists = errors.New("email exists")
 var ErrUndefined = errors.New("undefined error")
 var ErrVerificationCode = errors.New("verification code error")
 var ErrCreateTableConflict = errors.New("table label or position conflict error")
+var ErrItemAttributesConflict = errors.New("attributes conflict error")
 var ErrEnum = errors.New("enum parse error")
 
 type ErrorCode int
@@ -31,7 +32,8 @@ const (
 	SERVICE_KEY_DUPLICATION_ERROR ErrorCode = 6004
 	VERIFICATION_CODE_ERROR       ErrorCode = 6005
 	TABLE_CONFLICT_ERROR          ErrorCode = 6006
-	VERIFICATION_CODE_FREQUENT    ErrorCode = 6006
+	VERIFICATION_CODE_FREQUENT    ErrorCode = 6007
+	ATTRIBUTES_CONFLICT           ErrorCode = 6008
 	UNDEFINE_ERROR                ErrorCode = 9999
 )
 
@@ -64,6 +66,9 @@ func GetCode(err error) (statusCode int, errorCode ErrorCode) {
 	case errors.Is(err, ErrCreateTableConflict):
 		statusCode = http.StatusConflict
 		errorCode = TABLE_CONFLICT_ERROR
+	case errors.Is(err, ErrItemAttributesConflict):
+		statusCode = http.StatusConflict
+		errorCode = ATTRIBUTES_CONFLICT
 	default:
 		statusCode = http.StatusInternalServerError
 		errorCode = UNDEFINE_ERROR

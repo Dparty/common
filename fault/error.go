@@ -27,14 +27,14 @@ const (
 	PERMISSION_ERROR              ErrorCode = 403
 	NOT_FOUND_ERROR               ErrorCode = 404
 	TOO_MANY_REQUESTS             ErrorCode = 429
-	EMAIL_EXISTS_ERROR            ErrorCode = 6002
-	AUTHENTICATION_ERROR          ErrorCode = 6003
-	SERVICE_KEY_DUPLICATION_ERROR ErrorCode = 6004
-	VERIFICATION_CODE_ERROR       ErrorCode = 6005
-	TABLE_CONFLICT_ERROR          ErrorCode = 6006
-	VERIFICATION_CODE_FREQUENT    ErrorCode = 6007
-	ATTRIBUTES_CONFLICT           ErrorCode = 6008
-	UNDEFINE_ERROR                ErrorCode = 9999
+	EMAIL_EXISTS_ERROR            ErrorCode = 60002
+	AUTHENTICATION_ERROR          ErrorCode = 60003
+	SERVICE_KEY_DUPLICATION_ERROR ErrorCode = 60004
+	VERIFICATION_CODE_ERROR       ErrorCode = 60005
+	TABLE_CONFLICT_ERROR          ErrorCode = 60006
+	VERIFICATION_CODE_FREQUENT    ErrorCode = 60007
+	ATTRIBUTES_CONFLICT           ErrorCode = 60008
+	UNDEFINE_ERROR                ErrorCode = 99999
 )
 
 func GetCode(err error) (statusCode int, errorCode ErrorCode) {

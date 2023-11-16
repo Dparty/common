@@ -1,7 +1,5 @@
 package interfaces
 
-import "reflect"
-
 type Owner interface {
 	ID() uint
 	Own(asset Asset) bool
@@ -17,7 +15,7 @@ func Own(owner Owner, asset Asset) bool {
 	if owner == nil {
 		return false
 	}
-	if owner.ID() == asset.Owner().ID() && reflect.TypeOf(owner) == reflect.TypeOf(asset.Owner()) {
+	if owner.ID() == asset.Owner().ID() {
 		return true
 	}
 	return Own(owner.Owner(), asset)

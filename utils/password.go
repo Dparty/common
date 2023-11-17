@@ -7,10 +7,6 @@ import (
 	"strconv"
 )
 
-type IdGenertor struct {
-	ID uint
-}
-
 func StringToUint(s string) uint {
 	u, _ := strconv.ParseUint(s, 10, 64)
 	return uint(u)

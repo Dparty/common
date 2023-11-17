@@ -5,27 +5,10 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"strconv"
-
-	"github.com/bwmarrin/snowflake"
 )
-
-var node *snowflake.Node
 
 type IdGenertor struct {
 	ID uint
-}
-
-func init() {
-	var err error
-	node, err = snowflake.NewNode(1)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func GenerteId() uint {
-	id := node.Generate().Int64()
-	return uint(id)
 }
 
 func StringToUint(s string) uint {

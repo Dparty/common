@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/spf13/viper"
 )
@@ -19,11 +18,5 @@ func init() {
 }
 
 func GetString(s string) string {
-  if value := viper.GetString(s); value != "" {
-    return value
-  }
-  if value := os.Getenv(s); value != "" {
-    return value
-  }
-  return ""
+	return viper.GetString(s)
 }

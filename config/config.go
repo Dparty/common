@@ -20,3 +20,15 @@ func init() {
 func GetString(s string) string {
 	return viper.GetString(s)
 }
+
+func GetInt(s string) int {
+  return viper.GetInt(s)
+}
+
+func GetBool(s string) bool {
+  return viper.GetBool(s)
+}
+
+func GetFloat64(s string) float64 {
+  return viper.GetFloat64(s)
+}

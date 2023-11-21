@@ -16,7 +16,7 @@ import (
 
 const sendCloudApi = "https://api.sendcloud.net/smsapi/send"
 
-// A function(user , key string) return SendCloud struct
+// Function(user , key string) return SendCloud struct
 func NewSendCloud(user, key string) *SendCloud {
 	return &SendCloud{
 		user: user,
@@ -24,7 +24,7 @@ func NewSendCloud(user, key string) *SendCloud {
 	}
 }
 
-// A struct called SendCloud implement SmsSender interface
+// Struct called SendCloud implement SmsSender interface
 type SendCloud struct {
 	user string
 	key  string

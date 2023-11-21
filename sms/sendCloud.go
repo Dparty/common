@@ -39,9 +39,9 @@ func (s *SendCloud) Send(to PhoneNumber, message string) error {
 func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map[string]string) bool {
 	switch to.AreaCode {
 	case "86":
-		return s.SendChinaWithTemplate(to, templateId, vars)
+		return s.sendChinaWithTemplate(to, templateId, vars)
 	case "853", "852":
-		return s.SendInternationWithTemplate(to, templateId, vars)
+		return s.sendInternationWithTemplate(to, templateId, vars)
 	default:
 		return false
 	}
@@ -80,7 +80,7 @@ func (s SendCloud) Params(templateId string, phone string, msgType string, vars 
 	return pairs
 }
 
-func (s SendCloud) SendChinaWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
+func (s SendCloud) sendChinaWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
 	client := http.Client{}
 	postValues := url.Values{}
 	params := s.Params(templateId, phoneNumber.Number, "0", vars)
@@ -98,7 +98,7 @@ func (s SendCloud) SendChinaWithTemplate(phoneNumber PhoneNumber, templateId str
 	return sendCloudJson.Result
 }
 
-func (s SendCloud) SendInternationWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
+func (s SendCloud) sendInternationWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
 	client := http.Client{}
 	postValues := url.Values{}
 	phoneNumberString := "+" + phoneNumber.AreaCode + phoneNumber.Number

@@ -7,6 +7,10 @@ import (
 
 type List[T any] []T
 
+func (s List[T]) Append(t T) List[T] {
+	return append(s, t)
+}
+
 func (s List[T]) Len() int {
 	return len(s)
 }

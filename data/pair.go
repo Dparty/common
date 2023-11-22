@@ -10,6 +10,16 @@ type Pair[L, R any] struct {
 	R R `json:"right"`
 }
 
+func (p *Pair[L, R]) Left(l L) *Pair[L, R] {
+	p.L = l
+	return p
+}
+
+func (p *Pair[L, R]) Right(r R) *Pair[L, R] {
+	p.R = r
+	return p
+}
+
 func (Pair[L, R]) GormDataType() string {
 	return "JSON"
 }

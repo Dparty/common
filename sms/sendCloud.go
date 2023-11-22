@@ -39,9 +39,9 @@ func (s *SendCloud) Send(to PhoneNumber, message string) error {
 func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map[string]string) bool {
 	switch to.AreaCode {
 	case "86":
-		return s.sendChinaWithTemplate(to, templateId, vars)
+		return s.sendWithTemplate(to, templateId, vars, false)
 	case "853", "852":
-		return s.sendInternationWithTemplate(to, templateId, vars)
+		return s.sendWithTemplate(to, templateId, vars, true)
 	default:
 		return false
 	}
@@ -80,7 +80,7 @@ func (s SendCloud) Params(templateId string, phone string, msgType string, vars 
 	return pairs
 }
 
-func (s SendCloud) sendChinaWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
+func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string, international bool) bool {
 	client := http.Client{}
 	postValues := url.Values{}
 	params := s.Params(templateId, phoneNumber.Number, "0", vars)
@@ -88,26 +88,9 @@ func (s SendCloud) sendChinaWithTemplate(phoneNumber PhoneNumber, templateId str
 		postValues.Add(p.L, p.R)
 	}
 	postValues.Add("signature", s.Signature(templateId, phoneNumber.Number, "0", vars))
-	resp, err := client.PostForm(sendCloudApi, postValues)
-	if err != nil {
-		return false
+	if international {
+		postValues.Add("msgType", "2")
 	}
-	b, _ := io.ReadAll(resp.Body)
-	var sendCloudJson sendCloudResp
-	json.Unmarshal(b, &sendCloudJson)
-	return sendCloudJson.Result
-}
-
-func (s SendCloud) sendInternationWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
-	client := http.Client{}
-	postValues := url.Values{}
-	phoneNumberString := "+" + phoneNumber.AreaCode + phoneNumber.Number
-	params := s.Params(templateId, phoneNumberString, "2", vars)
-	for _, p := range params {
-		postValues.Add(p.L, p.R)
-	}
-	postValues.Add("signature", s.Signature(templateId, phoneNumberString, "2", vars))
-	postValues.Add("msgType", "2")
 	resp, err := client.PostForm(sendCloudApi, postValues)
 	if err != nil {
 		return false

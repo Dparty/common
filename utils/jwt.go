@@ -43,9 +43,11 @@ func VerifyJwt(tokenString string) (jwt.MapClaims, error) {
 		}
 		return secret, nil
 	})
+	if token == nil {
+		return nil, errors.New("unvalid token")
+	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims, nil
-	} else {
-		return claims, errors.New("unvalid token")
 	}
+	return nil, errors.New("unvalid token")
 }

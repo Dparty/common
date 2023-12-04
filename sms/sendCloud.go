@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -32,11 +31,6 @@ func NewSendCloud(user, key string) *SendCloud {
 type SendCloud struct {
 	user string
 	key  string
-}
-
-// SendCloud method Send implement SmsSender interface
-func (s *SendCloud) Send(to PhoneNumber, message string) error {
-	return errors.New("not implement")
 }
 
 // SendCloud method SendWithTemplate implement SmsSender interface

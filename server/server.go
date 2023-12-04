@@ -3,8 +3,18 @@ package server
 import (
 	"net/http"
 
+	"github.com/Depado/ginprom"
 	"github.com/gin-gonic/gin"
 )
+
+func MetricsMiddleware(router *gin.Engine) {
+	p := ginprom.New(
+		ginprom.Engine(router),
+		ginprom.Subsystem("gin"),
+		ginprom.Path("/metrics"),
+	)
+	router.Use(p.Instrument())
+}
 
 func CorsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {

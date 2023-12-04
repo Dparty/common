@@ -7,6 +7,5 @@ type PhoneNumber struct {
 }
 
 type SmsSender interface {
-	Send(to PhoneNumber, message string) error
 	SendWithTemplate(to PhoneNumber, templateId string, vars map[string]string) error
 }

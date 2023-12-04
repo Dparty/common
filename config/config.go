@@ -13,7 +13,7 @@ func init() {
 	viper.AddConfigPath(".")   // optionally look for config in the working directory
 	err = viper.ReadInConfig() // Find and read the config file
 	if err != nil {            // Handle errors reading the config file
-		panic(fmt.Errorf("databases fatal error config file: %w", err))
+		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 }
 
@@ -22,13 +22,13 @@ func GetString(s string) string {
 }
 
 func GetInt(s string) int {
-  return viper.GetInt(s)
+	return viper.GetInt(s)
 }
 
 func GetBool(s string) bool {
-  return viper.GetBool(s)
+	return viper.GetBool(s)
 }
 
 func GetFloat64(s string) float64 {
-  return viper.GetFloat64(s)
+	return viper.GetFloat64(s)
 }

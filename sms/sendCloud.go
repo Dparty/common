@@ -16,6 +16,10 @@ import (
 
 const sendCloudApi = "https://api.sendcloud.net/smsapi/send"
 
+/*
+SMS 短信服务商 SendCloud https://www.sendcloud.net/
+*/
+
 // Function(user , key string) return SendCloud struct
 func NewSendCloud(user, key string) *SendCloud {
 	return &SendCloud{

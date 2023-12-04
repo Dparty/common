@@ -8,19 +8,25 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-var secret []byte = []byte(config.GetString("jwt.secret"))
+var secret []byte
+
+func init() {
+	secret = []byte(config.GetString("jwt.secret"))
+}
 
 type Claims struct {
 	jwt.StandardClaims
-	ID string `json:"id"`
+	ID    string `json:"id"`
+	Email string `json:"email"`
+	Role  string `json:"role"`
 }
 
-func NewClaims(id string, expiredAt int64) Claims {
-	return Claims{StandardClaims: jwt.StandardClaims{ExpiresAt: expiredAt}, ID: id}
+func NewClaims(id, email, role string, expiredAt int64) Claims {
+	return Claims{StandardClaims: jwt.StandardClaims{ExpiresAt: expiredAt}, ID: id, Email: email, Role: role}
 }
 
 func SignJwt(id, email, role string, expiredAt int64) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, NewClaims(id, expiredAt))
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, NewClaims(id, email, role, expiredAt))
 	tokenString, err := token.SignedString(secret)
 	return tokenString, err
 }

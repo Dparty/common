@@ -22,7 +22,7 @@ type Claims struct {
 }
 
 func NewClaims(id, email, role string, expiredAt int64) Claims {
-	return Claims{StandardClaims: jwt.StandardClaims{ExpiresAt: expiredAt}, ID: id, Email: email, Role: role}
+	return Claims{ID: id, Email: email, Role: role}
 }
 
 func SignJwt(id, email, role string, expiredAt int64) (string, error) {

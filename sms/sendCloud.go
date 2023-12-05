@@ -93,7 +93,7 @@ func msgType(to PhoneNumber) string {
 func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
 	client := http.Client{}
 	postValues := url.Values{}
-	params := s.Params(templateId, phoneNumber.Number, "0", vars)
+	params := s.Params(templateId, phoneNumber.Number, msgType(phoneNumber), vars)
 	for _, p := range params {
 		postValues.Add(p.L, p.R)
 	}

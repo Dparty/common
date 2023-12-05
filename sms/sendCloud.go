@@ -36,13 +36,44 @@ type SendCloud struct {
 
 // SendCloud method SendWithTemplate implement SmsSender interface
 func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map[string]string) bool {
+	client := http.Client{}
+	postValues := url.Values{}
+	params := s.Params(templateId, GeneratePhoneNumber(to), msgType(to), vars)
+	for _, p := range params {
+		postValues.Add(p.L, p.R)
+	}
+	postValues.Add("signature", s.Signature(templateId, GeneratePhoneNumber(to), msgType(to), vars))
+	postValues.Add("msgType", msgType(to))
+	resp, err := client.PostForm(sendCloudApi, postValues)
+	if err != nil {
+		return false
+	}
+	b, _ := io.ReadAll(resp.Body)
+	var sendCloudJson sendCloudResp
+	json.Unmarshal(b, &sendCloudJson)
+	fmt.Println(sendCloudJson)
+	return sendCloudJson.Result
+}
+
+func GeneratePhoneNumber(to PhoneNumber) string {
 	switch to.AreaCode {
 	case "86":
-		return s.sendWithTemplate(to, templateId, vars)
+		return to.Number
 	case "853", "852":
-		return s.sendWithTemplate(to, templateId, vars)
+		return to.AreaCode + to.Number
 	default:
-		return false
+		return "0"
+	}
+}
+
+func msgType(to PhoneNumber) string {
+	switch to.AreaCode {
+	case "86":
+		return "0"
+	case "853", "852":
+		return "2"
+	default:
+		return "0"
 	}
 }
 
@@ -77,37 +108,6 @@ func (s SendCloud) Params(templateId string, phone string, msgType string, vars 
 		})
 	}
 	return pairs
-}
-
-func msgType(to PhoneNumber) string {
-	switch to.AreaCode {
-	case "86":
-		return "0"
-	case "853", "852":
-		return "2"
-	default:
-		return "0"
-	}
-}
-
-func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
-	client := http.Client{}
-	postValues := url.Values{}
-	params := s.Params(templateId, phoneNumber.Number, msgType(phoneNumber), vars)
-	for _, p := range params {
-		postValues.Add(p.L, p.R)
-	}
-	postValues.Add("signature", s.Signature(templateId, phoneNumber.Number, msgType(phoneNumber), vars))
-	postValues.Add("msgType", msgType(phoneNumber))
-	resp, err := client.PostForm(sendCloudApi, postValues)
-	if err != nil {
-		return false
-	}
-	b, _ := io.ReadAll(resp.Body)
-	var sendCloudJson sendCloudResp
-	json.Unmarshal(b, &sendCloudJson)
-	fmt.Println(sendCloudJson)
-	return sendCloudJson.Result
 }
 
 type sendCloudInfo struct {

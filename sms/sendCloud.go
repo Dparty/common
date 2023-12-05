@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -38,9 +37,9 @@ type SendCloud struct {
 func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map[string]string) bool {
 	switch to.AreaCode {
 	case "86":
-		return s.sendWithTemplate(to, templateId, vars, false)
+		return s.sendWithTemplate(to, templateId, vars)
 	case "853", "852":
-		return s.sendWithTemplate(to, templateId, vars, true)
+		return s.sendWithTemplate(to, templateId, vars)
 	default:
 		return false
 	}
@@ -79,17 +78,26 @@ func (s SendCloud) Params(templateId string, phone string, msgType string, vars 
 	return pairs
 }
 
-func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string, international bool) bool {
+func msgType(to PhoneNumber) string {
+	switch to.AreaCode {
+	case "86":
+		return "0"
+	case "853", "852":
+		return "2"
+	default:
+		return "0"
+	}
+}
+
+func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, vars map[string]string) bool {
 	client := http.Client{}
 	postValues := url.Values{}
 	params := s.Params(templateId, phoneNumber.Number, "0", vars)
 	for _, p := range params {
 		postValues.Add(p.L, p.R)
 	}
-	postValues.Add("signature", s.Signature(templateId, phoneNumber.Number, "0", vars))
-	// if international {
-	postValues.Add("msgType", "2")
-	// }
+	postValues.Add("signature", s.Signature(templateId, phoneNumber.Number, msgType(phoneNumber), vars))
+	postValues.Add("msgType", msgType(phoneNumber))
 	resp, err := client.PostForm(sendCloudApi, postValues)
 	if err != nil {
 		return false
@@ -97,7 +105,6 @@ func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, 
 	b, _ := io.ReadAll(resp.Body)
 	var sendCloudJson sendCloudResp
 	json.Unmarshal(b, &sendCloudJson)
-	fmt.Println(sendCloudJson)
 	return sendCloudJson.Result
 }
 

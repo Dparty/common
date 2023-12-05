@@ -87,9 +87,9 @@ func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, 
 		postValues.Add(p.L, p.R)
 	}
 	postValues.Add("signature", s.Signature(templateId, phoneNumber.Number, "0", vars))
-	if international {
-		postValues.Add("msgType", "2")
-	}
+	// if international {
+	postValues.Add("msgType", "2")
+	// }
 	resp, err := client.PostForm(sendCloudApi, postValues)
 	if err != nil {
 		return false

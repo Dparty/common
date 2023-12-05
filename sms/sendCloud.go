@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -40,7 +39,6 @@ func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map
 	postValues := url.Values{}
 	params := s.Params(templateId, GeneratePhoneNumber(to), msgType(to), vars)
 	for _, p := range params {
-		fmt.Println(p.L, p.R)
 		postValues.Add(p.L, p.R)
 	}
 	postValues.Add("signature", s.Signature(templateId, GeneratePhoneNumber(to), msgType(to), vars))
@@ -52,7 +50,6 @@ func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map
 	b, _ := io.ReadAll(resp.Body)
 	var sendCloudJson sendCloudResp
 	json.Unmarshal(b, &sendCloudJson)
-	fmt.Println(sendCloudJson)
 	return sendCloudJson.Result
 }
 

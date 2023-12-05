@@ -40,6 +40,7 @@ func (s *SendCloud) SendWithTemplate(to PhoneNumber, templateId string, vars map
 	postValues := url.Values{}
 	params := s.Params(templateId, GeneratePhoneNumber(to), msgType(to), vars)
 	for _, p := range params {
+		fmt.Println(p.L, p.R)
 		postValues.Add(p.L, p.R)
 	}
 	postValues.Add("signature", s.Signature(templateId, GeneratePhoneNumber(to), msgType(to), vars))

@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -105,6 +106,7 @@ func (s SendCloud) sendWithTemplate(phoneNumber PhoneNumber, templateId string, 
 	b, _ := io.ReadAll(resp.Body)
 	var sendCloudJson sendCloudResp
 	json.Unmarshal(b, &sendCloudJson)
+	fmt.Println(sendCloudJson)
 	return sendCloudJson.Result
 }
 

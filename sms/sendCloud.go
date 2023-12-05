@@ -61,7 +61,7 @@ func GeneratePhoneNumber(to PhoneNumber) string {
 	case "86":
 		return to.Number
 	case "853", "852":
-		return to.AreaCode + to.Number
+		return "+" + to.AreaCode + to.Number
 	default:
 		return "0"
 	}

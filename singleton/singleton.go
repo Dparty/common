@@ -2,19 +2,33 @@ package singleton
 
 import "sync"
 
-type Singleton[T any] struct {
+type Singleton[T any] interface {
+	Get() *T
+}
+
+type EagerSingleton[T any] struct {
+	entity *T
+}
+
+func NewEagerSingleton[T any](constructor func() *T) EagerSingleton[T] {
+	var singleton EagerSingleton[T]
+	singleton.entity = constructor()
+	return singleton
+}
+
+type LazySingleton[T any] struct {
 	entity      *T
 	constructor func() *T
 	lock        sync.Mutex
 }
 
-func NewSingleton[T any](constructor func() *T) Singleton[T] {
-	var singleton Singleton[T]
+func NewLazySingleton[T any](constructor func() *T) LazySingleton[T] {
+	var singleton LazySingleton[T]
 	singleton.constructor = constructor
 	return singleton
 }
 
-func (s *Singleton[T]) Get() *T {
+func (s *LazySingleton[T]) Get() *T {
 	s.lock.Lock()
 	if s.entity == nil {
 		s.entity = s.constructor()

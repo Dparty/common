@@ -14,12 +14,21 @@ func (s *EagerSingleton[T]) Get() *T {
 	return s.instance
 }
 
-func NewSingleton[T any](constructor func() *T, eagerModel bool) Singleton[T] {
-	if eagerModel {
+type Mode string
+
+const (
+	Eager Mode = "eager"
+	Lazy  Mode = "lazy"
+)
+
+func NewSingleton[T any](constructor func() *T, mode Mode) Singleton[T] {
+	switch mode {
+	case Eager:
 		return NewEagerSingleton[T](constructor)
-	} else {
+	case Lazy:
 		return NewLazySingleton[T](constructor)
 	}
+	return nil
 }
 
 func NewEagerSingleton[T any](constructor func() *T) *EagerSingleton[T] {

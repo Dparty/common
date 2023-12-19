@@ -18,7 +18,7 @@ type Mode int
 
 const (
 	Eager Mode = iota
-	Lazy  Mode = iota
+	Lazy
 )
 
 func NewSingleton[T any](constructor func() *T, mode Mode) Singleton[T] {

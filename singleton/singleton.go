@@ -14,11 +14,11 @@ func (s *EagerSingleton[T]) Get() *T {
 	return s.instance
 }
 
-type Mode string
+type Mode int
 
 const (
-	Eager Mode = "eager"
-	Lazy  Mode = "lazy"
+	Eager Mode = iota
+	Lazy  Mode = iota
 )
 
 func NewSingleton[T any](constructor func() *T, mode Mode) Singleton[T] {
